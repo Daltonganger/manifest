@@ -5,7 +5,7 @@
 # build (turbo, nest) needs. All base images are pinned by digest.
 
 # Stage 1: Install all dependencies (including dev deps) for the build.
-FROM node:22-alpine@sha256:4d64b49e6c891c8fc821007cb1cdc6c0db7773110ac2c34bf2e6960adef62ed3 AS deps
+FROM node:25-alpine@sha256:bdf2cca6fe3dabd014ea60163eca3f0f7015fbd5c7ee1b0e9ccb4ced6eb02ef4 AS deps
 WORKDIR /app
 COPY package.json package-lock.json turbo.json ./
 COPY packages/shared/package.json packages/shared/
@@ -23,7 +23,7 @@ RUN npx turbo build --filter=manifest-backend --filter=manifest-frontend --filte
 
 # Stage 3: Production dependencies only, installed on glibc to match the
 # distroless debian12 runtime. All runtime deps are pure JS.
-FROM node:22-slim@sha256:f3a68cf41a855d227d1b0ab832bed9749469ef38cf4f58182fb8c893bc462383 AS prod-deps
+FROM node:25-slim@sha256:435f3537a088a01fd208bb629a4b69c28d85deb9a60af8a710cafc3befd6e3be AS prod-deps
 WORKDIR /app
 COPY package.json package-lock.json ./
 COPY packages/shared/package.json packages/shared/
